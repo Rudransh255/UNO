@@ -176,8 +176,11 @@ function renderOpponents(players, currentPlayerId) {
         // Add click handler for catch button
         if (isCatchable) {
             const catchBtn = opponentEl.querySelector('.catch-btn');
-            catchBtn.addEventListener('click', () => {
+            catchBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                console.log('🎯 Catching player:', player.id, player.name);
                 socket.emit('catchUno', player.id);
+                showToast(`Trying to catch ${player.name}...`);
             });
         }
     });

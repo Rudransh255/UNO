@@ -467,18 +467,37 @@ io.on('connection', (socket) => {
     // Catch a player who forgot to say UNO
     socket.on('catchUno', (targetPlayerId) => {
         const room = rooms.get(socket.roomCode);
-        if (!room || !room.gameStarted) return;
+        if (!room || !room.gameStarted) {
+            console.log('Catch failed: No room or game not started');
+            return;
+        }
 
         const catcher = room.players.find(p => p.id === socket.id);
         const target = room.players.find(p => p.id === targetPlayerId);
 
-        if (!catcher || !target) return;
+        console.log('Catch attempt:', {
+            catcherId: socket.id,
+            targetId: targetPlayerId,
+            targetFound: !!target,
+            canBeCaught: target?.canBeCaught,
+            targetCards: target?.cards?.length
+        });
+
+        if (!catcher || !target) {
+            console.log('Catch failed: Catcher or target not found');
+            socket.emit('error', { message: 'Player not found!' });
+            return;
+        }
 
         // Can't catch yourself
-        if (catcher.id === target.id) return;
+        if (catcher.id === target.id) {
+            socket.emit('error', { message: "You can't catch yourself!" });
+            return;
+        }
 
         // Check if target can be caught
         if (target.canBeCaught && target.cards.length === 1) {
+            console.log('✅ Catch successful!', target.name);
             // Target is caught! They draw 2 cards as penalty
             target.canBeCaught = false;
             if (target.catchTimeout) {
@@ -517,6 +536,9 @@ io.on('connection', (socket) => {
                     }))
                 });
             });
+        } else {
+            console.log('Catch failed: Target not catchable', { canBeCaught: target.canBeCaught, cards: target.cards.length });
+            socket.emit('error', { message: 'Too late! Player is safe now.' });
         }
     });
 
