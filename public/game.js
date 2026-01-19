@@ -1,9 +1,23 @@
 // Socket connection with explicit configuration
 const socket = io({
-    transports: ['websocket', 'polling'],
+    transports: ['polling', 'websocket'],
     reconnection: true,
-    reconnectionAttempts: 5,
-    reconnectionDelay: 1000
+    reconnectionAttempts: 10,
+    reconnectionDelay: 1000,
+    timeout: 20000
+});
+
+// Connection status handlers
+socket.on('connect', () => {
+    console.log('✅ Connected to server:', socket.id);
+});
+
+socket.on('connect_error', (error) => {
+    console.error('❌ Connection error:', error.message);
+});
+
+socket.on('disconnect', (reason) => {
+    console.log('🔌 Disconnected:', reason);
 });
 
 // Game state
