@@ -1,0 +1,18 @@
+{
+    "name": "multiplayer-uno",
+    "version": "1.0.0",
+    "description": "A beautiful multiplayer UNO game",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "node server.js"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "socket.io": "^4.6.1",
+        "uuid": "^9.0.0"
+    }
+}

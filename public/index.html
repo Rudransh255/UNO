@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play UNO online with friends!">
+    <title>UNO Multiplayer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="animated-bg">
+        <div class="floating-card red" style="--delay: 0s; --x: 5%; --y: 15%; --rot: 15deg;"><span>7</span></div>
+        <div class="floating-card blue" style="--delay: 1.5s; --x: 85%; --y: 20%; --rot: -20deg;"><span>3</span></div>
+        <div class="floating-card green" style="--delay: 3s; --x: 15%; --y: 75%; --rot: 25deg;"><span>⇄</span></div>
+        <div class="floating-card yellow" style="--delay: 4.5s; --x: 75%; --y: 85%; --rot: -15deg;"><span>5</span></div>
+        <div class="floating-card red" style="--delay: 2s; --x: 45%; --y: 8%; --rot: 10deg;"><span>⊘</span></div>
+        <div class="floating-card blue" style="--delay: 5s; --x: 92%; --y: 55%; --rot: -30deg;"><span>+2</span></div>
+        <div class="floating-card wild" style="--delay: 3.5s; --x: 3%; --y: 45%; --rot: 20deg;"><span>W</span></div>
+        <div class="floating-card green" style="--delay: 6s; --x: 60%; --y: 5%; --rot: -10deg;"><span>9</span></div>
+        <div class="floating-card yellow" style="--delay: 1s; --x: 25%; --y: 90%; --rot: 30deg;"><span>1</span></div>
+        <div class="floating-card red" style="--delay: 4s; --x: 88%; --y: 75%; --rot: -25deg;"><span>4</span></div>
+        <div class="floating-card wild" style="--delay: 5.5s; --x: 50%; --y: 92%; --rot: 5deg;"><span>+4</span></div>
+        <div class="floating-card blue" style="--delay: 2.5s; --x: 8%; --y: 60%; --rot: -8deg;"><span>8</span></div>
+    </div>
+
+    <div id="menuScreen" class="screen active">
+        <div class="menu-container">
+            <div class="logo-container">
+                <h1 class="logo"><span class="red">U</span><span class="blue">N</span><span class="green">O</span></h1>
+                <p class="tagline">Multiplayer Card Game</p>
+            </div>
+            <div class="menu-card glass">
+                <div class="input-group">
+                    <label for="playerName">Your Name</label>
+                    <input type="text" id="playerName" placeholder="Enter your name" maxlength="15">
+                </div>
+                <div class="menu-buttons">
+                    <button id="createRoomBtn" class="btn btn-primary">🎮 Create Room</button>
+                    <button id="joinRoomBtn" class="btn btn-secondary">🚀 Join Room</button>
+                </div>
+            </div>
+            <div id="joinRoomSection" class="join-section glass hidden">
+                <div class="input-group">
+                    <label for="roomCodeInput">Room Code</label>
+                    <input type="text" id="roomCodeInput" placeholder="Enter 6-digit code" maxlength="6">
+                </div>
+                <button id="confirmJoinBtn" class="btn btn-accent">Join Game</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="lobbyScreen" class="screen">
+        <div class="lobby-container">
+            <div class="lobby-header glass">
+                <h2>Game Lobby</h2>
+                <div class="room-code-display">
+                    <span>Room Code:</span>
+                    <span id="roomCodeDisplay" class="code">------</span>
+                    <button id="copyCodeBtn" class="btn-icon-small">📋</button>
+                </div>
+            </div>
+            <div class="players-grid" id="playersList"></div>
+            <div class="lobby-actions">
+                <button id="startGameBtn" class="btn btn-primary btn-large hidden">🎯 Start Game</button>
+                <p id="waitingText" class="waiting-text">Waiting for host to start...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameScreen" class="screen">
+        <div class="game-container">
+            <div class="opponents-area" id="opponentsArea"></div>
+            <div class="game-table">
+                <div class="deck-area">
+                    <div class="draw-pile" id="drawPile">
+                        <div class="card card-back">
+                            <div class="card-back-design">UNO</div>
+                        </div>
+                    </div>
+                    <div class="discard-pile" id="discardPile"></div>
+                    <div class="direction-indicator" id="directionIndicator"><span class="arrow">↻</span></div>
+                </div>
+                <div class="color-indicator" id="colorIndicator"></div>
+                <div class="turn-indicator" id="turnIndicator"><span>Your Turn!</span></div>
+            </div>
+            <div class="player-hand-area">
+                <div class="hand-info">
+                    <span id="cardCount">7 cards</span>
+                    <button id="unoBtn" class="btn btn-uno hidden">UNO!</button>
+                </div>
+                <div class="player-hand" id="playerHand"></div>
+            </div>
+            <div class="game-sidebar glass">
+                <h3>Players</h3>
+                <div class="players-list-game" id="playersListGame"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="colorPickerModal" class="modal hidden">
+        <div class="modal-content glass">
+            <h3>Choose a Color</h3>
+            <div class="color-picker">
+                <button class="color-btn" data-color="red" style="background:#ef4444"></button>
+                <button class="color-btn" data-color="blue" style="background:#3b82f6"></button>
+                <button class="color-btn" data-color="green" style="background:#22c55e"></button>
+                <button class="color-btn" data-color="yellow" style="background:#eab308"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameOverModal" class="modal hidden">
+        <div class="modal-content glass">
+            <span class="trophy">🏆</span>
+            <h2 id="winnerName">Player Wins!</h2>
+            <button id="backToLobbyBtn" class="btn btn-primary">Back to Menu</button>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>
