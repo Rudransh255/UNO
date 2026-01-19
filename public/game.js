@@ -1,5 +1,10 @@
-// Socket connection
-const socket = io();
+// Socket connection with explicit configuration
+const socket = io({
+    transports: ['websocket', 'polling'],
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 1000
+});
 
 // Game state
 let myId = null;
